@@ -1,4 +1,5 @@
 # Project place file
+*.rbxl 
 /SmartRaycast.rbxlx
 
 # Roblox Studio lock files

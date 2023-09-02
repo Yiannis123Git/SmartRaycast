@@ -1,6 +1,6 @@
 [package]
-name = "yiannis123/smartraycast"
-version = "0.1.0"
+name = "yiannis123git/smartraycast"
+version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
