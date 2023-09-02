@@ -17,7 +17,7 @@ local SanityCheck = true
 --// Misc //--
 
 function IsChannel(X: any): boolean
-	if typeof(X) ~= "table" or X.Name == nil or X.RayParams == nil or tostring(X) ~= "SmartRaycastChannel" then -- don't question this
+	if typeof(X) ~= "table" or X.Name == nil or X.RayParams == nil or tostring(X) ~= "SmartRaycast Channel" then -- don't question this
 		return false
 	end
 
@@ -31,7 +31,11 @@ function TypeCheck(Thing: any, ExpectedType: string, CanBeNil: boolean?)
 	)
 end
 
-function TableMemberCheck(t: { [any]: any })
+function TableMemberCheck(t: { [any]: any }?)
+	if t == nil then
+		return
+	end
+
 	for Key, Value in pairs(t) do
 		assert(
 			typeof(Key) == "number" and typeof(Value) == "Instance",
@@ -59,21 +63,21 @@ type Channel = typeof(setmetatable({} :: ChannelProperties, Channel))
 -- Return "ClassName" when tostring is called on Channel
 
 function Channel.__tostring()
-	return "SmartRaycastChannel"
+	return "SmartRaycast Channel"
 end
 
 --// Constructor
 
 function Channel.new(
 	ChannelName: string,
-	BaseArray: { Instance },
-	InstancesToCheck: { Instance },
-	InstanceLogic: (Instance) -> boolean,
-	FilterType: Enum.RaycastFilterType,
-	IgnoreWater: boolean,
-	CollisionGroup: string,
-	RespectCanCollide: boolean,
-	BruteForceAllSlow: boolean
+	BaseArray: { Instance }?,
+	InstancesToCheck: { Instance }?,
+	InstanceLogic: ((Instance) -> boolean)?,
+	FilterType: Enum.RaycastFilterType?,
+	IgnoreWater: boolean?,
+	CollisionGroup: string?,
+	RespectCanCollide: boolean?,
+	BruteForceAllSlow: boolean?
 ): Channel
 	local self = setmetatable({} :: ChannelProperties, Channel)
 
@@ -100,6 +104,8 @@ function Channel.new(
 				),
 			"[SmartRaycast] InstancesToCheck and InstanceLogic must both be nil or none of them must be nil"
 		)
+
+		assert(ChannelLog[ChannelName] == nil, "[SmartRaycast] A channel with this name already exist: " .. ChannelName)
 	end
 
 	-- Set Channel name
@@ -150,7 +156,7 @@ function Channel.new(
 
 	-- InstancesToCheck handling
 
-	if InstancesToCheck ~= nil then
+	if InstancesToCheck ~= nil and InstanceLogic ~= nil then
 		-- Define ChannelTag
 
 		self._ChannelTag = self._Name .. CollectionServiceTag
@@ -230,16 +236,18 @@ function Channel:Destroy()
 		return
 	end
 
-	-- Destroy Janitor (we need to do this before removing channel tag from instances to avoid event spam)
+	if self._Janitor ~= nil then
+		-- Destroy Janitor (we need to do this before removing channel tag from instances to avoid event spam)
 
-	self._Janitor:Destroy()
+		self._Janitor:Destroy()
 
-	-- Remove Channel Tag from all tagged objects
+		-- Remove Channel Tag from all tagged objects
 
-	local TaggedObjects = CollectionService:GetTagged(self._ChannelTag)
+		local TaggedObjects = CollectionService:GetTagged(self._ChannelTag)
 
-	for _, Inst in pairs(TaggedObjects) do
-		CollectionService:RemoveTag(Inst, self._ChannelTag)
+		for _, Inst in pairs(TaggedObjects) do
+			CollectionService:RemoveTag(Inst, self._ChannelTag)
+		end
 	end
 
 	-- Remove destroyed channel from ChannelLog table
