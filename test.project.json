@@ -1,0 +1,19 @@
+{
+    "name": "SmartRaycastTesting",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "Packages": {
+                "$path": "Packages",
+                "SmartRaycast": {
+                    "$path": "src"
+                }
+            }
+        },
+        "StarterPlayer": {
+            "StarterPlayerScripts": {
+                "$path": "Client"
+            }
+        }
+    }
+}

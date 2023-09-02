@@ -1,0 +1,8 @@
+[package]
+name = "yiannis123/smartraycast"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+Janitor = "howmanysmall/janitor@^1.15.4"
