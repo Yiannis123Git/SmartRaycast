@@ -7,12 +7,31 @@ local CollectionService = game:GetService("CollectionService")
 local JanitorModule = require(script.Parent.Janitor)
 
 --// Variables
+local SmartRaycast = {}
 local ChannelLog = {}
 local CollectionServiceTag = "SRaycast"
 
 --// Settings
-local Warnings = true
-local SanityCheck = true
+SmartRaycast.SanityCheck = true
+SmartRaycast.Warnings = true
+
+--[=[
+	@class SmartRaycast
+]=]
+
+--[=[
+	@prop SanityCheck boolean
+	@within SmartRaycast
+
+	Setting this property to false will disable sanity checking.
+]=]
+
+--[=[
+	@prop Warnings boolean
+	@within SmartRaycast
+
+	Setting this property to false will disable warnings.
+]=]
 
 --// Misc //--
 
@@ -46,6 +65,59 @@ end
 
 --// Channel Object //--
 
+--[=[
+	A set of RayParams ties to this object. Think of this object as your new RaycastParams.
+
+	@class Channel
+]=]
+
+--[=[
+	@prop _Name string 
+	@readonly
+	@within Channel
+
+	Name used to identify channels internaly.
+]=]
+
+--[=[
+	@prop RayParams RaycastParams
+	@within Channel
+
+	RaycastParams tied to the Channel. All properties of the RaycastParams can be changed in runtime **excluding FilterDescendantsInstances**
+]=]
+
+--[=[
+	@prop _Janitor Janitor
+	@readonly
+	@within Channel
+
+	[Janitor](https://github.com/howmanysmall/Janitor) Object used for cleanup.
+]=]
+
+--[=[
+	@prop _ChannelTag string? 
+	@readonly
+	@within Channel
+
+	Collection Service Tag used to tag instances associated with the Channel.
+]=]
+
+--[=[
+	@prop _MaintenanceCopy { Instance? } 
+	@readonly
+	@within Channel
+
+	A copy of FilterDescendantsInstances used to maintain the actual FilterDescendantsInstances.
+]=]
+
+--[=[
+	@prop _FilterCounter number 
+	@readonly
+	@within Channel
+
+	Keeps track of the number of instances in FilterDescendantsInstances.
+]=]
+
 local Channel = {}
 Channel.__index = Channel
 
@@ -68,6 +140,13 @@ end
 
 --// Constructor
 
+--[=[
+	:::info
+	The ``CreateChannel`` module function is used to create new channels 
+	:::
+	Creates a new Channel object.
+	@return Channel
+]=]
 function Channel.new(
 	ChannelName: string,
 	BaseArray: { Instance }?,
@@ -83,7 +162,7 @@ function Channel.new(
 
 	-- Sanity Check (this can be potential overhead if you rely on constant channel creation/destruction)
 
-	if SanityCheck == true then
+	if SmartRaycast.SanityCheck == true then
 		TypeCheck(ChannelName, "string")
 		TypeCheck(BaseArray, "table", true)
 		TypeCheck(InstancesToCheck, "table", true)
@@ -225,11 +304,14 @@ end
 
 --// Destroy Method
 
+--[=[
+	Destroys a channel by cleaning up references and disconnecting events. After ``:Destroy`` is called, the corresponding FilterDescendantsInstances will no longer be actively maintained.
+]=]
 function Channel:Destroy()
 	if not ChannelLog[self._Name] then
 		-- Channel has already been destroyed:
 
-		if Warnings == true then
+		if SmartRaycast.Warnings == true then
 			warn("[SmartRaycast] Called destroy method on channel that has already been destroyed. Memory leak?")
 		end
 
@@ -279,6 +361,11 @@ end
 
 --// Destroy Channel Module Alternative function
 
+--[=[
+	@within SmartRaycast
+
+	You can use this to destroy channels instead of calling ``:Destroy()`` on a channel.
+]=]
 function DestroyChannel(WhatToDestroy: string | Channel)
 	if IsChannel(WhatToDestroy) == true and typeof(WhatToDestroy) ~= "string" then
 		-- WhatToDestroy is a channel:
@@ -291,20 +378,57 @@ function DestroyChannel(WhatToDestroy: string | Channel)
 	end
 end
 
+--[=[
+	@within SmartRaycast
+	@return Channel? 
+
+	You can use this function to get a Channel Object by providing the name of the Channel, if the Channel does not exist then nil will be returned 
+]=]
+function GetChannelObject(ChannelName: string): Channel?
+	return ChannelLog[ChannelName]
+end
+
 --// Raycast Function
 
+--[=[
+	@within SmartRaycast
+
+	Cast a ray similiar to ``workspace:Raycast()``. 
+	Instead of using this function you can instead do: 
+	``workspace:Raycast(Origin,Direction,Channel.RayParams)``
+]=]
 function Cast(Origin: Vector3, Direction: Vector3, ChannelName: string)
 	assert(ChannelLog[ChannelName], "[SmartRaycast] No channel found with Name: " .. ChannelName)
 
 	return workspace:Raycast(Origin, Direction, ChannelLog[ChannelName].RayParams)
 end
 
+--[=[
+	@within SmartRaycast
+	@function CreateChannel
+	@param ChannelName string
+	@param BaseArray { Instance }?
+	@param InstancesToCheck { Instance }?
+	@param InstanceLogic ((Instance) -> boolean)?
+	@param FilterType Enum.RaycastFilterType?
+	@param IgnoreWater boolean?
+	@param CollisionGroup string?
+	@param RespectCanCollide boolean?
+	@param BruteForceAllSlow boolean?
+
+	:::warning 
+	If you rely on constantly creating and destroying channels, you should set the ``.SanityCheck`` property of the module to false to avoid potential overhead.
+	:::
+
+	Creates a new channel.
+]=]
+
 --// Module Definitions
 
-local SmartRaycast = {}
-
 SmartRaycast.CreateChannel = Channel.new
+
 SmartRaycast.DestroyChannel = DestroyChannel
+SmartRaycast.GetChannelObject = GetChannelObject
 SmartRaycast.Cast = Cast
 
 return SmartRaycast
