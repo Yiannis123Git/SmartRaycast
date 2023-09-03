@@ -347,12 +347,18 @@ end
 
 function Channel:_RemoveFromFDI(Inst: Instance)
 	local IndexToRemove = table.find(self._MaintenanceCopy, Inst)
-	local Replacement = self._MaintenanceCopy[self._FilterCounter]
 
-	self._MaintenanceCopy[self._FilterCounter] = nil
-	self._FilterCounter -= 1
+	if IndexToRemove == self._FilterCounter then
+		self._MaintenanceCopy[self._FilterCounter] = nil
+		self._FilterCounter -= 1
+	else
+		local Replacement = self._MaintenanceCopy[self._FilterCounter]
 
-	self._MaintenanceCopy[IndexToRemove :: number] = Replacement
+		self._MaintenanceCopy[self._FilterCounter] = nil
+		self._FilterCounter -= 1
+
+		self._MaintenanceCopy[IndexToRemove :: number] = Replacement
+	end
 
 	self.RayParams.FilterDescendantsInstances = self._MaintenanceCopy
 end
