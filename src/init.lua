@@ -384,9 +384,14 @@ end
 --[=[
 	@within SmartRaycast
 
-	Cast a ray similiar to ``workspace:Raycast()``. 
-	Instead of using this function you can instead do: 
-	``workspace:Raycast(Origin,Direction,Channel.RayParams)``
+	Cast a ray similiar to ``workspace:Raycast()``. If you want identical usage as the normal roblox method you can do the following:
+
+	```lua
+	local SmartRaycast = PathToModule
+	local Channel = SmartRaycast.CreateChannel("ExampleChannel")
+
+	local MyResult = workspace:Raycast(Origin,Direction,Channel.RayParams)
+	```
 ]=]
 function Cast(Origin: Vector3, Direction: Vector3, ChannelName: string)
 	assert(ChannelLog[ChannelName], "[SmartRaycast] No channel found with Name: " .. ChannelName)

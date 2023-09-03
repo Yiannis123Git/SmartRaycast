@@ -16,4 +16,4 @@ smartraycast = "yiannis123git/smartraycast@x"
 Download `SmartRaycast.rbxm` from the [latest release](https://github.com/Yiannis123Git/SmartRaycast/releases/latest) and drag and drop the file into Roblox Studio
 
 ## Documentation
-[Doc Page](https://yiannis123git.github.io/SmartRaycast/api/SmartRaycast) 
+[Doc Page](https://yiannis123git.github.io/SmartRaycast) 

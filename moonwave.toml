@@ -3,3 +3,22 @@ title = "SmartRaycast"
 [footer]
 style = "dark" 
 copyright = "Copyright © 2023 Yiannis123. Built with Moonwave and Docusaurus"
+
+[docusaurus]
+tagline = "Handle RayParams efficiently"
+
+[home]
+enabled = true
+includeReadme = false
+
+[[home.features]]
+title = "Centralizes Raycast Parameters"
+description = "All Parameters are derived from the same module. This allows you to have a global set of RaycastParams"
+
+[[home.features]]
+title = "Avoid useless boilerplate/duplicate code"
+description = "SmartRaycast handles the maintenance of FilterDescendantsInstances for you with a simple API"
+
+[[home.features]]
+title = "Limits overhead"
+description = "Built with performance in mind to enable you to build large projects"
