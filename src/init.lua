@@ -247,10 +247,7 @@ function Channel.new(
 		-- Define Recursive Logic Function
 
 		local function RecursiveLogic(Inst: Instance)
-			local Success, Result = pcall(function()
-				return InstanceLogic(Inst)
-			end)
-
+			local Success, Result = pcall(InstanceLogic, Inst)
 			if Success == true and Result == true then
 				self:_AppendToFDI(Inst)
 			end
@@ -282,9 +279,7 @@ function Channel.new(
 		for _, Inst in pairs(InstancesToCheck) do
 			self._Janitor:Add(
 				Inst.DescendantAdded:Connect(function(Descendant)
-					local Success, Result = pcall(function()
-						return InstanceLogic(Descendant)
-					end)
+					local Success, Result = pcall(InstanceLogic, Descendant)
 
 					if Success == true and Result == true then
 						self:_AppendToFDI(Descendant)
