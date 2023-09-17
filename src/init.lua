@@ -411,6 +411,7 @@ end
 	@param CollisionGroup string?
 	@param RespectCanCollide boolean?
 	@param BruteForceAllSlow boolean?
+	@return Channel
 
 	:::warning 
 	If you rely on constantly creating and destroying channels, you should set the ``.SanityCheck`` property of the module to false to avoid potential overhead.
