@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v2.3.1">
 <title data-rh="true">SmartRaycast | SmartRaycast</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://Yiannis123Git.github.io/SmartRaycast/api/SmartRaycast"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docusaurus_tag" content="default"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docsearch:docusaurus_tag" content="default"><meta data-rh="true" property="og:title" content="SmartRaycast | SmartRaycast"><link data-rh="true" rel="canonical" href="https://Yiannis123Git.github.io/SmartRaycast/api/SmartRaycast"><link data-rh="true" rel="alternate" href="https://Yiannis123Git.github.io/SmartRaycast/api/SmartRaycast" hreflang="en"><link data-rh="true" rel="alternate" href="https://Yiannis123Git.github.io/SmartRaycast/api/SmartRaycast" hreflang="x-default"><link rel="stylesheet" href="/SmartRaycast/assets/css/styles.e1adec2f.css">
-<link rel="preload" href="/SmartRaycast/assets/js/runtime~main.f0153c8c.js" as="script">
-<link rel="preload" href="/SmartRaycast/assets/js/main.cd0565c7.js" as="script">
+<link rel="preload" href="/SmartRaycast/assets/js/runtime~main.61113a44.js" as="script">
+<link rel="preload" href="/SmartRaycast/assets/js/main.d2fae9b3.js" as="script">
 </head>
 <body class="navigation-with-keyboard">
 <script>!function(){function e(e){document.documentElement.setAttribute("data-theme",e)}var t=function(){var e=null;try{e=localStorage.getItem("theme")}catch(e){}return e}();null!==t?e(t):window.matchMedia("(prefers-color-scheme: dark)").matches?e("dark"):(window.matchMedia("(prefers-color-scheme: light)").matches,e("light"))}()</script><div id="__docusaurus">
@@ -24,7 +24,7 @@
 
 <span class="token keyword">local</span> MyResult <span class="token operator">=</span> workspace<span class="token punctuation">:</span><span class="token function">Raycast</span><span class="token punctuation">(</span>Origin<span class="token punctuation">,</span>Direction<span class="token punctuation">,</span>Channel<span class="token punctuation">.</span>RayParams<span class="token punctuation">)</span>
 </code></pre>
-</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="CreateChannel"><code style="text-decoration:none">CreateChannel</code><a href="#CreateChannel" class="hash-link" aria-label="Direct link to CreateChannel" title="Direct link to CreateChannel">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Yiannis123Git/SmartRaycast/blob/master/src/init.lua#L431"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>SmartRaycast<!-- -->.</code><code class="green_DgR4">CreateChannel</code><code>(</code><div class="inset_uKQm"><div><code>ChannelName<!-- -->: </code><code class="blue_P4bS">string</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
+</div><div class="divider_rE5g"></div><h3 class="anchor anchorWithStickyNavbar_LWe7" id="CreateChannel"><code style="text-decoration:none">CreateChannel</code><a href="#CreateChannel" class="hash-link" aria-label="Direct link to CreateChannel" title="Direct link to CreateChannel">​</a></h3><div class="repositoryDetailsContainer_BPdw"><a class="sourceButton_sEho" href="https://github.com/Yiannis123Git/SmartRaycast/blob/master/src/init.lua#L432"><div class="sourceButtonText_Vh0m">&lt;/&gt;</div></a></div><div class="memberString_GwaU"><code>SmartRaycast<!-- -->.</code><code class="green_DgR4">CreateChannel</code><code>(</code><div class="inset_uKQm"><div><code>ChannelName<!-- -->: </code><code class="blue_P4bS">string</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>Name of the channel that will be created.</p>
 </span></span></div><div><code>BaseArray<!-- -->: </code><code class="purple_ieR2">{</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="purple_ieR2">}</code><code class="blue_P4bS">?</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>Instances that will always remain present in the FilterDescendantsInstances Array.</p>
@@ -32,7 +32,7 @@
 <p>Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.</p>
 </span></span></div><div><code>InstanceLogic<!-- -->: </code><code class="purple_ieR2">(</code><code class="green_DgR4">(</code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="https://developer.roblox.com/en-us/api-reference/datatype/Instance" target="_blank" rel="noopener noreferrer">Instance<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound" style="color:gray;vertical-align:middle;margin-left:2px"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></code><code class="green_DgR4">)</code><code class="green_DgR4"> → </code><code class="blue_P4bS">boolean</code><code class="purple_ieR2">)</code><code class="blue_P4bS">?</code><code>,</code><span class="inlineDescription_G7Er">-- <span>
 <p>A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.</p>
-</span></span></div><div><code>FilterType<!-- -->: </code><code class="blue_P4bS">Enum.RaycastFilterType?</code><code>,</code></div><div><code>IgnoreWater<!-- -->: </code><code class="blue_P4bS">boolean?</code><code>,</code></div><div><code>CollisionGroup<!-- -->: </code><code class="blue_P4bS">string?</code><code>,</code></div><div><code>RespectCanCollide<!-- -->: </code><code class="blue_P4bS">boolean?</code><code>,</code></div><div><code>BruteForceAllSlow<!-- -->: </code><code class="blue_P4bS">boolean?</code></div></div><code>) → </code><code>(</code><code>)</code></div><div>
+</span></span></div><div><code>FilterType<!-- -->: </code><code class="blue_P4bS">Enum.RaycastFilterType?</code><code>,</code></div><div><code>IgnoreWater<!-- -->: </code><code class="blue_P4bS">boolean?</code><code>,</code></div><div><code>CollisionGroup<!-- -->: </code><code class="blue_P4bS">string?</code><code>,</code></div><div><code>RespectCanCollide<!-- -->: </code><code class="blue_P4bS">boolean?</code><code>,</code></div><div><code>BruteForceAllSlow<!-- -->: </code><code class="blue_P4bS">boolean?</code></div></div><code>) → </code><code class="blue_P4bS"><a style="text-decoration:underline;color:inherit" href="/SmartRaycast/api/Channel">Channel</a></code></div><div>
 <div class="admonition admonition-warning alert alert--danger">
   <div class="admonition-heading">
     <h5><span class="admonition-icon"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="16" viewBox="0 0 12 16">
@@ -178,10 +178,15 @@
                     &quot;lua_type&quot;: &quot;boolean?&quot;
                 }
             ],
-            &quot;returns&quot;: [],
+            &quot;returns&quot;: [
+                {
+                    &quot;desc&quot;: &quot;&quot;,
+                    &quot;lua_type&quot;: &quot;Channel&quot;
+                }
+            ],
             &quot;function_type&quot;: &quot;static&quot;,
             &quot;source&quot;: {
-                &quot;line&quot;: 431,
+                &quot;line&quot;: 432,
                 &quot;path&quot;: &quot;src/init.lua&quot;
             }
         }
@@ -214,7 +219,7 @@
         &quot;path&quot;: &quot;src/init.lua&quot;
     }
 }</pre></details></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#types" class="table-of-contents__link toc-highlight">Types</a></li><li><a href="#properties" class="table-of-contents__link toc-highlight">Properties</a><ul><li><a href="#SanityCheck" class="table-of-contents__link toc-highlight">SanityCheck</a></li><li><a href="#Warnings" class="table-of-contents__link toc-highlight">Warnings</a></li></ul></li><li><a href="#functions" class="table-of-contents__link toc-highlight">Functions</a><ul><li><a href="#Cast" class="table-of-contents__link toc-highlight">.Cast</a></li><li><a href="#CreateChannel" class="table-of-contents__link toc-highlight">.CreateChannel</a></li><li><a href="#DestroyChannel" class="table-of-contents__link toc-highlight">.DestroyChannel</a></li><li><a href="#GetChannelObject" class="table-of-contents__link toc-highlight">.GetChannelObject</a></li></ul></li></ul></div></div></div></div></main></div></div><footer class="footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2023 Yiannis123. Built with Moonwave and Docusaurus</div></div></div></footer></div>
-<script src="/SmartRaycast/assets/js/runtime~main.f0153c8c.js"></script>
-<script src="/SmartRaycast/assets/js/main.cd0565c7.js"></script>
+<script src="/SmartRaycast/assets/js/runtime~main.61113a44.js"></script>
+<script src="/SmartRaycast/assets/js/main.d2fae9b3.js"></script>
 </body>
 </html>
