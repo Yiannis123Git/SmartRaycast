@@ -130,7 +130,7 @@ type ChannelProperties = {
 	_FilterCounter: number,
 }
 
-type Channel = typeof(setmetatable({} :: ChannelProperties, Channel))
+export type Channel = typeof(setmetatable({} :: ChannelProperties, Channel))
 
 -- Return "ClassName" when tostring is called on Channel
 
