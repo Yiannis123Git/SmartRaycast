@@ -9,7 +9,7 @@ _This resource was created for me familiarize myself with creating open source r
 ## How to install
 ### Wally
 ```toml
-smartraycast = "yiannis123git/smartraycast@x"
+smartraycast = "yiannis123git/smartraycast@*"
 ```
 
 ### Manual
