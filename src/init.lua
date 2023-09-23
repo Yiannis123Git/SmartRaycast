@@ -151,7 +151,7 @@ function Channel.new(
 	ChannelName: string,
 	BaseArray: { Instance }?,
 	InstancesToCheck: { Instance }?,
-	InstanceLogic: ((Instance) -> boolean)?,
+	InstanceLogic: ((Instance) -> boolean | nil)?,
 	FilterType: Enum.RaycastFilterType?,
 	IgnoreWater: boolean?,
 	CollisionGroup: string?,
@@ -405,7 +405,7 @@ end
 	@param ChannelName string -- Name of the channel that will be created. 
 	@param BaseArray { Instance }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
 	@param InstancesToCheck { Instance }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
-	@param InstanceLogic ((Instance) -> boolean)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
+	@param InstanceLogic ((Instance) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
 	@param FilterType Enum.RaycastFilterType?
 	@param IgnoreWater boolean?
 	@param CollisionGroup string?
