@@ -142,16 +142,27 @@ end
 
 --[=[
 	:::info
-	The ``CreateChannel`` module function is used to create new channels 
+	This is the same function as the ``CreateChannel`` module function 
 	:::
-	Creates a new Channel object.
+
+	@param ChannelName string -- Name of the channel that will be created. 
+	@param BaseArray { Instance }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
+	@param InstancesToCheck { Instance }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
+	@param InstanceLogic ((any) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
+	@param FilterType Enum.RaycastFilterType?
+	@param IgnoreWater boolean?
+	@param CollisionGroup string?
+	@param RespectCanCollide boolean?
+	@param BruteForceAllSlow boolean?
 	@return Channel
+
+	Creates a new Channel
 ]=]
 function Channel.new(
 	ChannelName: string,
 	BaseArray: { Instance }?,
 	InstancesToCheck: { Instance }?,
-	InstanceLogic: ((Instance) -> boolean | nil)?,
+	InstanceLogic: ((any) -> boolean | nil)?,
 	FilterType: Enum.RaycastFilterType?,
 	IgnoreWater: boolean?,
 	CollisionGroup: string?,
@@ -249,7 +260,7 @@ function Channel.new(
 		local function RecursiveLogic(Inst: Instance)
 			local Success, Result = pcall(InstanceLogic, Inst)
 			if Success == true and Result == true then
-				self:_AppendToFDI(Inst)
+				self:AppendToFDI(Inst)
 			end
 
 			local InstanceChildren = Inst:GetChildren()
@@ -282,7 +293,7 @@ function Channel.new(
 					local Success, Result = pcall(InstanceLogic, Descendant)
 
 					if Success == true and Result == true then
-						self:_AppendToFDI(Descendant)
+						self:AppendToFDI(Descendant)
 					end
 				end),
 				"Disconnect"
@@ -300,7 +311,7 @@ end
 --// Destroy Method
 
 --[=[
-	Destroys a channel by cleaning up references and disconnecting events. After ``:Destroy`` is called, the corresponding FilterDescendantsInstances will no longer be actively maintained.
+	Destroys a channel by cleaning up references and disconnecting events. After ``:Destroy`` is called, the corresponding FilterDescendantsInstances will no longer be actively maintained and the channel's methods should no longer be used.
 ]=]
 function Channel:Destroy()
 	if not ChannelLog[self._Name] then
@@ -332,7 +343,12 @@ function Channel:Destroy()
 	ChannelLog[self.Name] = nil
 end
 
-function Channel:_AppendToFDI(Inst: Instance)
+--[=[
+	@param Inst Instance -- The Instance to be added to FilterDescendantsInstances
+
+	Adds an instance to FilterDescendantsInstances.
+]=]
+function Channel:AppendToFDI(Inst: Instance)
 	CollectionService:AddTag(Inst, self._ChannelTag)
 
 	self._FilterCounter += 1
@@ -346,6 +362,26 @@ function Channel:_RemoveFromFDI(Inst: Instance)
 	self._MaintenanceCopy[self._FilterCounter] = nil
 	self._FilterCounter -= 1
 	self.RayParams.FilterDescendantsInstances = self._MaintenanceCopy
+end
+--[=[
+	@param Inst Instance -- The Instance to be removed from FilterDescendantsInstances
+
+	Removes an Instance from FilterDescendantsInstances.
+
+	:::warning 
+	Do not use ``_RemoveFromFDI`` instead of ``RemoveFromFDI``. ``RemoveFromFDI`` should be used to manualy remove instances, ``_RemoveFromFDI`` should never be used and is only used internally.
+	:::
+]=]
+function Channel:RemoveFromFDI(Inst: Instance)
+	-- Check if Instance has already been automaticly removed
+
+	local IndexToRemove = table.find(self._MaintenanceCopy, Inst)
+
+	if IndexToRemove ~= nil then
+		-- Remove Tag from instance (triggers removal)
+
+		CollectionService:RemoveTag(Inst, self._ChannelTag)
+	end
 end
 
 --// Module Functions //--
@@ -405,7 +441,7 @@ end
 	@param ChannelName string -- Name of the channel that will be created. 
 	@param BaseArray { Instance }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
 	@param InstancesToCheck { Instance }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
-	@param InstanceLogic ((Instance) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
+	@param InstanceLogic ((any) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
 	@param FilterType Enum.RaycastFilterType?
 	@param IgnoreWater boolean?
 	@param CollisionGroup string?
