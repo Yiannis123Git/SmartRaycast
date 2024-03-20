@@ -57,8 +57,8 @@ function TableMemberCheck(t: { [any]: any }?)
 
 	for Key, Value in pairs(t) do
 		assert(
-			typeof(Key) == "number" and typeof(Value) == "Instance",
-			"[SmartRaycast] Invalid table stracture expected {[number] : instance}"
+			typeof(Key) == "number" and (typeof(Value) == "Instance" or typeof(Value) == "string"),
+			"[SmartRaycast] Invalid table stracture expected {instance | string}"
 		)
 	end
 end
@@ -125,8 +125,8 @@ type ChannelProperties = {
 	_Name: string,
 	RayParams: RaycastParams,
 	_Janitor: JanitorModule.Janitor,
-	_ChannelTag: string?,
-	_MaintenanceCopy: { Instance? },
+	_ChannelTag: string,
+	_MaintenanceCopy: { Instance },
 	_FilterCounter: number,
 }
 
@@ -146,8 +146,8 @@ end
 	:::
 
 	@param ChannelName string -- Name of the channel that will be created. 
-	@param BaseArray { Instance }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
-	@param InstancesToCheck { Instance }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
+	@param BaseArray { Instance | string }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
+	@param InstancesToCheck { Instance | string }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
 	@param InstanceLogic ((any) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
 	@param FilterType Enum.RaycastFilterType?
 	@param IgnoreWater boolean?
@@ -160,9 +160,9 @@ end
 ]=]
 function Channel.new(
 	ChannelName: string,
-	BaseArray: { Instance }?,
-	InstancesToCheck: { Instance }?,
-	InstanceLogic: ((any) -> boolean | nil)?,
+	BaseArray: { Instance | string }?,
+	InstancesToCheck: { Instance | string }?,
+	InstanceLogic: ((Instance) -> boolean | nil)?,
 	FilterType: Enum.RaycastFilterType?,
 	IgnoreWater: boolean?,
 	CollisionGroup: string?,
@@ -202,6 +202,10 @@ function Channel.new(
 
 	self._Name = ChannelName
 
+	-- Set Channel Tag
+
+	self._ChannelTag = self._Name .. CollectionServiceTag
+
 	-- Create and set object RayParams
 
 	local RayParams = RaycastParams.new() -- due to typechecking problem
@@ -218,25 +222,60 @@ function Channel.new(
 	RayParamProperties["RespectCanCollide"] = RespectCanCollide
 	RayParamProperties["BruteForceAllSlow"] = BruteForceAllSlow
 
-	for Key, Value in pairs(RayParamProperties) do
-		self.RayParams[Key] = Value
+	for Key, Value in RayParamProperties do
+		self.RayParams[Key] = Value -- Ingnore this warning, just a clean way of setting the properties of RayParams
 	end
+
+	-- Create janitor instance
+
+	self._Janitor = JanitorModule.new()
 
 	-- Define MaintenanceCopy
 
-	local MaintenanceCopy
+	local MaintenanceCopy = {}
 
 	-- Define FilterCounter
 
 	self._FilterCounter = 0
 
-	-- Unpack BaseArray into MaintenanceCopy (if needed)
+	-- Connect GetInstanceRemovedSignal to Channel Tag to catch the destruction of MaintenanceCopy members
+
+	self._Janitor:Add(
+		CollectionService:GetInstanceRemovedSignal(self._ChannelTag):Connect(function(Inst: Instance)
+			self:_RemoveFromFDI(Inst)
+		end),
+		"Disconnect"
+	)
+
+	-- Handle BaseArray
 
 	if BaseArray then
-		MaintenanceCopy = { table.unpack(BaseArray) }
+		for _, Value in BaseArray do
+			if typeof(Value) == "Instance" then
+				-- User provided an instance:
+
+				MaintenanceCopy[#MaintenanceCopy + 1] = Value
+			else
+				-- User provided a collection service tag:
+
+				local Instances = CollectionService:GetTagged(Value)
+
+				for _, Inst in Instances do
+					MaintenanceCopy[#MaintenanceCopy + 1] = Inst
+				end
+
+				self._Janitor:Add(
+					CollectionService:GetInstanceAddedSignal(Value):Connect(function(Inst: Instance)
+						self:AppendToFDI(Inst)
+					end),
+					"Disconnect"
+				)
+			end
+		end
+
+		-- Update FilterCounter
+
 		self._FilterCounter = #MaintenanceCopy
-	else
-		MaintenanceCopy = {}
 	end
 
 	-- Set FilterDescendantsInstances to MaintenanceCopy
@@ -244,60 +283,69 @@ function Channel.new(
 	self._MaintenanceCopy = MaintenanceCopy
 	self.RayParams.FilterDescendantsInstances = MaintenanceCopy
 
-	-- InstancesToCheck handling
+	-- Handle InstancesToCheck
 
 	if InstancesToCheck ~= nil and InstanceLogic ~= nil then
-		-- Define ChannelTag
-
-		self._ChannelTag = self._Name .. CollectionServiceTag
-
-		-- Create Janitor for channel
-
-		self._Janitor = JanitorModule.new()
-
-		-- Define Recursive Logic Function
-
-		local function RecursiveLogic(Inst: Instance)
-			local Success, Result = pcall(InstanceLogic, Inst)
-			if Success == true and Result == true then
-				self:AppendToFDI(Inst)
-			end
-
-			local InstanceChildren = Inst:GetChildren()
-
-			for _, Child in pairs(InstanceChildren) do
-				RecursiveLogic(Child)
-			end
-		end
-
-		-- Connect GetInstanceRemovedSignal to Channel Tag to catch the destruction of MaintenanceCopy members
-
-		self._Janitor:Add(
-			CollectionService:GetInstanceRemovedSignal(self._ChannelTag):Connect(function(Inst: Instance)
-				self:_RemoveFromFDI(Inst)
-			end),
-			"Disconnect"
-		)
-
-		-- Pass descendants of the Instances in InstancesToCheck array threw the InstanceLogic function
-
-		for _, Inst in pairs(InstancesToCheck) do
-			RecursiveLogic(Inst)
-		end
-
-		-- Connect DescendantAdded event to Instances in InstancesToCheck array
-
-		for _, Inst in pairs(InstancesToCheck) do
+		local function HookForChanges(Inst)
 			self._Janitor:Add(
-				Inst.DescendantAdded:Connect(function(Descendant)
-					local Success, Result = pcall(InstanceLogic, Descendant)
+				Inst.Changed:Connect(function()
+					local _Success, Result = pcall(InstanceLogic, Inst)
 
-					if Success == true and Result == true then
-						self:AppendToFDI(Descendant)
+					if Result == true and Inst:HasTag(self._ChannelTag) == false then
+						self:AppendToFDI(Inst)
+					elseif Result ~= true and Inst:HasTag(self._ChannelTag) == true then
+						Inst:RemoveTag(self._ChannelTag) -- Automatically removes from FilterDescendantsInstances
 					end
 				end),
 				"Disconnect"
 			)
+		end
+
+		local function RecursiveLogic(Inst: Instance)
+			local _Success, Result = pcall(InstanceLogic, Inst)
+
+			if Result == true then
+				self:AppendToFDI(Inst)
+			end
+
+			HookForChanges(Inst)
+
+			local InstanceChildren = Inst:GetChildren()
+
+			for _, Child in InstanceChildren do
+				RecursiveLogic(Child)
+			end
+		end
+
+		for _, Value in pairs(InstancesToCheck) do
+			if typeof(Value) == "Instance" then
+				RecursiveLogic(Value)
+
+				self._Janitor:Add(
+					Value.DescendantAdded:Connect(function(Descendant)
+						local _Success, Result = pcall(InstanceLogic, Descendant)
+
+						if Result == true then
+							self:AppendToFDI(Descendant)
+						end
+
+						HookForChanges(Descendant)
+					end),
+					"Disconnect"
+				)
+			else
+				local Instances = CollectionService:GetTagged(Value)
+
+				for _, Inst in Instances do
+					local _Success, Result = pcall(InstanceLogic, Inst)
+
+					if Result == true then
+						self:AppendToFDI(Inst)
+					end
+
+					HookForChanges(Inst)
+				end
+			end
 		end
 	end
 
@@ -324,18 +372,16 @@ function Channel:Destroy()
 		return
 	end
 
-	if self._Janitor ~= nil then
-		-- Destroy Janitor (we need to do this before removing channel tag from instances to avoid event spam)
+	-- Destroy Janitor (we need to do this before removing channel tag from instances to avoid event spam)
 
-		self._Janitor:Destroy()
+	self._Janitor:Destroy()
 
-		-- Remove Channel Tag from all tagged objects
+	-- Remove Channel Tag from all tagged objects
 
-		local TaggedObjects = CollectionService:GetTagged(self._ChannelTag)
+	local TaggedObjects = CollectionService:GetTagged(self._ChannelTag)
 
-		for _, Inst in pairs(TaggedObjects) do
-			CollectionService:RemoveTag(Inst, self._ChannelTag)
-		end
+	for _, Inst in pairs(TaggedObjects) do
+		CollectionService:RemoveTag(Inst, self._ChannelTag)
 	end
 
 	-- Remove destroyed channel from ChannelLog table

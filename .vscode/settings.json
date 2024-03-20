@@ -1,7 +1,8 @@
 {
-    "[lua]": {
+    "[luau]": {
         "editor.defaultFormatter": "JohnnyMorganz.stylua",
         "editor.formatOnSave": true
     },
-    "robloxLsp.workspace.rojoProjectFile": "test"
+    "robloxLsp.workspace.rojoProjectFile": "test",
+    "luau-lsp.sourcemap.rojoProjectFile": "test.project.json"
 }
