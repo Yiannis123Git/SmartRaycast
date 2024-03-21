@@ -8,5 +8,5 @@ realm = "shared"
 
 
 [dependencies]
-Janitor = "howmanysmall/janitor@^1.15.4"
+Janitor = "howmanysmall/janitor@^1.15.7"
 
