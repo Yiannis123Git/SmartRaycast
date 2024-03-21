@@ -7,8 +7,9 @@ SmartRaycastTesting.rbxl
 /*.rbxlx.lock
 /*.rbxl.lock
 
-# Wally Packages 
+# Wally  
 Packages
+wally.lock
 
 # moonwave
 build
@@ -16,3 +17,6 @@ docs
 
 # Testing Files
 Client 
+
+# sourcemap
+sourcemap.json
