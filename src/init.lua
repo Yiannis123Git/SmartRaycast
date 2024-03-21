@@ -480,9 +480,9 @@ end
 	@within SmartRaycast
 	@function CreateChannel
 	@param ChannelName string -- Name of the channel that will be created. 
-	@param BaseArray { Instance }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
-	@param InstancesToCheck { Instance }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
-	@param InstanceLogic ((any) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
+	@param BaseArray { Instance | string }? -- Instances/Collection Service tags that will always remain present in the FilterDescendantsInstances Array.
+	@param InstancesToCheck { Instance | string }? -- Instances/Collection Service tags, that will be checked in runtime using the 'InstanceLogic' function.
+	@param InstanceLogic ((Instance) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the channel's filter.
 	@param FilterType Enum.RaycastFilterType?
 	@param IgnoreWater boolean?
 	@param CollisionGroup string?
@@ -490,20 +490,10 @@ end
 	@param BruteForceAllSlow boolean?
 	@return Channel
 
-	:::warning 
-	If you rely on constantly creating and destroying channels, you should set the ``.SanityCheck`` property of the module to false to avoid potential overhead.
+	:::info  
+	For more information, please refer to the 'How to Use' section in the Docs, specifically the 'Creating a Channel' part.
 	:::
 
-	:::note
-	InstanceLogic Example:
-	```lua
-	local function InstanceLogic(Inst: Instance)
-		if Inst.Size.X > 100 then -- this will never error due pcall so it is safe
-			return true 
-		end
-	end
-	```
-	:::
 	Creates a new channel.
 ]=]
 
