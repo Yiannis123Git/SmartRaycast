@@ -140,24 +140,6 @@ end
 
 --// Constructor
 
---[=[
-	:::info
-	This is the same function as the ``CreateChannel`` module function 
-	:::
-
-	@param ChannelName string -- Name of the channel that will be created. 
-	@param BaseArray { Instance | string }? -- Instances that will always remain present in the FilterDescendantsInstances Array.
-	@param InstancesToCheck { Instance | string }? -- Instances that will have their Descendants checked in runtime using the 'InstanceLogic' function.
-	@param InstanceLogic ((any) -> boolean | nil)? -- A function that should recieve an instance and return true if the instance should be added in the FilterDescendantsInstances Array. This function is run in protected call so you don't need to worry about any errors.
-	@param FilterType Enum.RaycastFilterType?
-	@param IgnoreWater boolean?
-	@param CollisionGroup string?
-	@param RespectCanCollide boolean?
-	@param BruteForceAllSlow boolean?
-	@return Channel
-
-	Creates a new Channel
-]=]
 function Channel.new(
 	ChannelName: string,
 	BaseArray: { Instance | string }?,
@@ -345,6 +327,19 @@ function Channel.new(
 
 					HookForChanges(Inst)
 				end
+
+				self._Janitor:Add(
+					CollectionService:GetInstanceAddedSignal(Value):Connect(function(Inst: Instance)
+						local _Success, Result = pcall(InstanceLogic, Inst)
+
+						if Result == true then
+							self:AppendToFDI(Inst)
+						end
+
+						HookForChanges(Inst)
+					end),
+					"Disconnect"
+				)
 			end
 		end
 	end
