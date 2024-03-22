@@ -15,6 +15,7 @@ docs
 
 # Testing Files
 Client 
+test.project.json
 
 # sourcemap
 sourcemap.json
