@@ -390,11 +390,11 @@ end
 	Adds an instance to FilterDescendantsInstances.
 ]=]
 function Channel:AppendToFDI(Inst: Instance)
-	CollectionService:AddTag(Inst, self._ChannelTag)
-
 	self._FilterCounter += 1
 	self._MaintenanceCopy[self._FilterCounter] = Inst
 	self.RayParams:AddToFilter({ Inst })
+
+	CollectionService:AddTag(Inst, self._ChannelTag)
 end
 
 function Channel:_RemoveFromFDI(Inst: Instance)
