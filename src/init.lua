@@ -126,6 +126,7 @@ type ChannelProperties = {
 	RayParams: RaycastParams,
 	_Janitor: JanitorModule.Janitor,
 	_ChannelTag: string,
+	_HookedInstancesChannelTag: string,
 	_MaintenanceCopy: { Instance },
 	_FilterCounter: number,
 }
@@ -188,6 +189,10 @@ function Channel.new(
 
 	self._ChannelTag = self._Name .. CollectionServiceTag
 
+	-- Set .Changed Channel Tag
+
+	self._HookedInstancesChannelTag = self._Name .. "HookedInstances" .. CollectionServiceTag
+
 	-- Create and set object RayParams
 
 	local RayParams = RaycastParams.new() -- due to typechecking problem
@@ -220,11 +225,20 @@ function Channel.new(
 
 	self._FilterCounter = 0
 
-	-- Connect GetInstanceRemovedSignal to Channel Tag to catch the destruction of MaintenanceCopy members
+	-- Connect GetInstanceRemovedSignal to channel tag
 
 	self._Janitor:Add(
 		CollectionService:GetInstanceRemovedSignal(self._ChannelTag):Connect(function(Inst: Instance)
 			self:_RemoveFromFDI(Inst)
+		end),
+		"Disconnect"
+	)
+
+	-- Connect GetInstanceRemovedSignal to hooked instances channel tag
+
+	self._Janitor:Add(
+		CollectionService:GetInstanceRemovedSignal(self._HookedInstancesChannelTag):Connect(function(Inst: Instance)
+			self._Janitor:Remove(Inst)
 		end),
 		"Disconnect"
 	)
@@ -279,8 +293,11 @@ function Channel.new(
 						Inst:RemoveTag(self._ChannelTag) -- Automatically removes from FilterDescendantsInstances
 					end
 				end),
-				"Disconnect"
+				"Disconnect",
+				Inst
 			)
+
+			Inst:AddTag(self._HookedInstancesChannelTag)
 		end
 
 		local function RecursiveLogic(Inst: Instance)
@@ -367,16 +384,22 @@ function Channel:Destroy()
 		return
 	end
 
-	-- Destroy Janitor (we need to do this before removing channel tag from instances to avoid event spam)
+	-- Destroy Janitor (we need to do this before removing tags from instances to avoid event spam)
 
 	self._Janitor:Destroy()
 
-	-- Remove Channel Tag from all tagged objects
+	-- Remove SmartRaycast Tags from all tagged objects
 
 	local TaggedObjects = CollectionService:GetTagged(self._ChannelTag)
 
 	for _, Inst in pairs(TaggedObjects) do
 		CollectionService:RemoveTag(Inst, self._ChannelTag)
+	end
+
+	TaggedObjects = CollectionService:GetTagged(self._HookedInstancesChannelTag)
+
+	for _, Inst in pairs(TaggedObjects) do
+		CollectionService:RemoveTag(Inst, self._HookedInstancesChannelTag)
 	end
 
 	-- Remove destroyed channel from ChannelLog table
