@@ -217,6 +217,12 @@ function Channel.new(
 
 	self._Janitor = JanitorModule.new()
 
+	-- Define Collection service tag arrays (Used during checks that determine if a tag can be removed from an instance)
+
+	local CollectionServiceTags = {}
+
+	local InstancesToCheckTags = {}
+
 	-- Define MaintenanceCopy
 
 	local MaintenanceCopy = {}
@@ -266,6 +272,10 @@ function Channel.new(
 					end),
 					"Disconnect"
 				)
+
+				-- Add tag to CollectionServiceTags
+
+				CollectionServiceTags[#CollectionServiceTags + 1] = Value
 			end
 		end
 
@@ -282,6 +292,25 @@ function Channel.new(
 	-- Handle InstancesToCheck
 
 	if InstancesToCheck ~= nil and InstanceLogic ~= nil then
+		local function CanBeRemoved(Inst: Instance): boolean
+			for _, Tag in CollectionServiceTags do
+				if Inst:HasTag(Tag) then
+					return false
+				end
+			end
+
+			return true
+		end
+
+		local function CanBeUnhooked(Inst: Instance): boolean
+			for _, Tag in InstancesToCheckTags do
+				if Inst:HasTag(Tag :: string) then
+					return false
+				end
+			end
+			return true
+		end
+
 		local function HookForChanges(Inst)
 			self._Janitor:Add(
 				Inst.Changed:Connect(function()
@@ -294,7 +323,7 @@ function Channel.new(
 					end
 				end),
 				"Disconnect",
-				Inst
+				Inst -- This also makes it so duplicate hooks cannot occur on the same instance
 			)
 
 			Inst:AddTag(self._HookedInstancesChannelTag)
@@ -318,6 +347,8 @@ function Channel.new(
 
 		for _, Value in pairs(InstancesToCheck) do
 			if typeof(Value) == "Instance" then
+				-- User provided an instance:
+
 				RecursiveLogic(Value)
 
 				self._Janitor:Add(
@@ -332,7 +363,22 @@ function Channel.new(
 					end),
 					"Disconnect"
 				)
+
+				self._Janitor:Add(
+					Value.DescendantRemoving:Connect(function(Descendant)
+						if Descendant:HasTag(self._ChannelTag) and CanBeRemoved(Descendant) then
+							Descendant:RemoveTag(self._ChannelTag) -- Automatically removes from filter
+						end
+
+						if Descendant:HasTag(self._HookedInstancesChannelTag) and CanBeUnhooked(Descendant) then
+							Descendant:RemoveTag(self._HookedInstancesChannelTag)
+						end
+					end),
+					"Disconnect"
+				)
 			else
+				-- User provided a collection service tag:
+
 				local Instances = CollectionService:GetTagged(Value)
 
 				for _, Inst in Instances do
@@ -357,6 +403,11 @@ function Channel.new(
 					end),
 					"Disconnect"
 				)
+
+				-- Add tag to the appropriate arrays
+
+				CollectionServiceTags[#CollectionServiceTags + 1] = Value
+				InstancesToCheckTags[#InstancesToCheckTags + 1] = Value
 			end
 		end
 	end
