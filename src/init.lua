@@ -490,9 +490,9 @@ end
 function Channel:RemoveFromFDI(Inst: Instance)
 	-- Check if Instance has already been automaticly removed
 
-	local IndexToRemove = table.find(self._MaintenanceCopy, Inst)
+	local Exists = Inst:HasTag(self._ChannelTag)
 
-	if IndexToRemove ~= nil then
+	if Exists then
 		-- Remove Tag from instance (triggers removal)
 
 		CollectionService:RemoveTag(Inst, self._ChannelTag)
