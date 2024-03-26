@@ -146,6 +146,7 @@ function Channel.new(
 	BaseArray: { Instance | string }?,
 	InstancesToCheck: { Instance | string }?,
 	InstanceLogic: ((any) -> boolean | nil)?,
+	AccountForRuntimeChanges: boolean?,
 	FilterType: Enum.RaycastFilterType?,
 	IgnoreWater: boolean?,
 	CollisionGroup: string?,
@@ -161,6 +162,7 @@ function Channel.new(
 		TypeCheck(BaseArray, "table", true)
 		TypeCheck(InstancesToCheck, "table", true)
 		TypeCheck(InstanceLogic, "function", true)
+		TypeCheck(AccountForRuntimeChanges, "boolean", true)
 		TypeCheck(FilterType, "EnumItem", true)
 		TypeCheck(IgnoreWater, "boolean", true)
 		TypeCheck(CollisionGroup, "string", true)
@@ -326,21 +328,23 @@ function Channel.new(
 		end
 
 		local function HookForChanges(Inst)
-			self._Janitor:Add(
-				Inst.Changed:Connect(function()
-					local _Success, Result = pcall(InstanceLogic, Inst)
+			if AccountForRuntimeChanges then
+				self._Janitor:Add(
+					Inst.Changed:Connect(function()
+						local _Success, Result = pcall(InstanceLogic, Inst)
 
-					if Result == true and Inst:HasTag(self._ChannelTag) == false then
-						self:AppendToFDI(Inst)
-					elseif Result ~= true and Inst:HasTag(self._ChannelTag) == true then
-						Inst:RemoveTag(self._ChannelTag) -- Automatically removes from FilterDescendantsInstances
-					end
-				end),
-				"Disconnect",
-				Inst -- This also makes it so duplicate hooks cannot occur on the same instance
-			)
+						if Result == true and Inst:HasTag(self._ChannelTag) == false then
+							self:AppendToFDI(Inst)
+						elseif Result ~= true and Inst:HasTag(self._ChannelTag) == true then
+							Inst:RemoveTag(self._ChannelTag) -- Automatically removes from FilterDescendantsInstances
+						end
+					end),
+					"Disconnect",
+					Inst -- This also makes it so duplicate hooks cannot occur on the same instance
+				)
 
-			Inst:AddTag(self._HookedInstancesChannelTag)
+				Inst:AddTag(self._HookedInstancesChannelTag)
+			end
 		end
 
 		local function RecursiveLogic(Inst: Instance)
