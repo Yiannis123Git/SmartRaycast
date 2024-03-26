@@ -179,6 +179,20 @@ function Channel.new(
 		)
 
 		assert(ChannelLog[ChannelName] == nil, "[SmartRaycast] A channel with this name already exist: " .. ChannelName)
+
+		if InstancesToCheck then
+			for _, Value in InstancesToCheck do
+				if typeof(Value) == "Instance" then
+					for _, v in InstancesToCheck do
+						if typeof(v) == "Instance" and v ~= Value and Value:IsDescendantOf(v) then
+							error(
+								"[SmartRaycast] InstancesToCheck cannot contain instances that are descendants of other instances in the array"
+							)
+						end
+					end
+				end
+			end
+		end
 	end
 
 	-- Set Channel name
