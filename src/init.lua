@@ -473,7 +473,7 @@ function Channel:Destroy()
 
 	-- Remove destroyed channel from ChannelLog table
 
-	ChannelLog[self.Name] = nil
+	ChannelLog[self._Name] = nil
 end
 
 --[=[
