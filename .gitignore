@@ -17,6 +17,9 @@ test.project.json
 # sourcemap
 sourcemap.json
 
+# Doc Site
+site
+
 # Util related
 node_modules
 Util
