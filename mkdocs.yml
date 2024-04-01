@@ -1,0 +1,73 @@
+site_name: SmartRaycast
+
+repo_url: https://github.com/Yiannis123Git/SmartRaycast
+repo_name: Yiannis123Git/SmartRaycast
+theme:
+  name: material
+  language: en
+  features:
+    - search.share
+    - search.highlight
+    - search.suggest
+    - navigation.indexes
+    - navigation.path
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.tracking
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.instant.progress
+    - content.code.copy
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline 
+        name: Switch to dark mode
+      primary: deep purple
+      accent: purple 
+
+    - scheme: slate 
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode    
+      primary: deep purple
+      accent: lime
+
+extra:
+  social:
+    - icon: fontawesome/brands/github-alt
+      link: https://github.com/Yiannis123Git
+    - icon: simple/roblox
+      link: https://www.roblox.com/users/51762172/profile
+
+plugins:
+  - search
+  
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
+  - attr_list
+
+ 
+# Page tree
+
+nav: 
+ - Getting Started:
+   - "Introduction": index.md
+   - "How to use": HowToUse.md
+ - API:
+   - "SmartRaycast": SmartRaycast.md  
+   - "Channel": Channel.md
+
+
+copyright: |
+  &copy; 2024 <a href="https://github.com/Yiannis123Git"  target="_blank" rel="noopener">Yiannis123

@@ -10,10 +10,6 @@
 Packages
 wally.lock
 
-# moonwave
-build
-docs
-
 # Testing Files
 Client 
 test.project.json
@@ -26,3 +22,6 @@ node_modules
 Util
 package-lock.json
 package.json
+
+# Python 
+.venv

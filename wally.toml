@@ -1,7 +1,7 @@
 [package]
 name = "yiannis123git/smartraycast"
-description = "RaycastParams management module for Roblox"
-version = "1.2.1"
+description = "Raycast Management Module for Efficient Raycasting"
+version = "2.0.0"
 license = "MIT"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
