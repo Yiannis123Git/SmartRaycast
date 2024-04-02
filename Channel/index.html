@@ -840,14 +840,14 @@
 <p>Destroys a channel by cleaning up references and disconnecting events. After <code>:Destroy</code> is called, the corresponding FilterDescendantsInstances will no longer be actively maintained and the channel should no longer be used.</p>
 <h3 id="addtofilter">AddToFilter</h3>
 <p><em>Channel:AddToFilter(ToAdd: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Instance">Instance</a></span> | <span style="color: teal;">string</span> )</em></p>
-<p>Adds an instance or <a href="https://create.roblox.com/docs/reference/engine/classes/CollectionService">collection service</a> tag to the FilterDescendantsInstances.</p>
+<p>Adds an instance or <a href="https://create.roblox.com/docs/reference/engine/classes/CollectionService">collection service</a> tag to the FilterDescendantsInstances. This method protects you from adding duplicate entries.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>This method can be run in parallel when adding instances.</p>
 </div>
 <h3 id="removefromfilter">RemoveFromFilter</h3>
 <p><em>Channel:RemoveFromFilter(ToRemove: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Instance">Instance</a></span> | <span style="color: teal;">string</span> )</em></p>
-<p>Removes an Instance or <a href="https://create.roblox.com/docs/reference/engine/classes/CollectionService">collection service</a> tag from the FilterDescendantsInstances.</p>
+<p>Removes an Instance or <a href="https://create.roblox.com/docs/reference/engine/classes/CollectionService">collection service</a> tag from the FilterDescendantsInstances. This method will not error if you try to remove a tag/instance that does not exist.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>This method can be run in parallel when removing instances.</p>
