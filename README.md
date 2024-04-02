@@ -1,4 +1,4 @@
-# Getting started 
+# SmartRaycast
 SmartRaycast is a raycast management module for Roblox Studio. This resource employs best practices to assist you in creating ambitious projects with minimal overhead. It provides a ready-to-use solution for your projects, allowing you to focus on development. 
 
 What does it do?
@@ -17,3 +17,6 @@ smartraycast = "yiannis123git/smartraycast@*"
 
 ### Manual
 Download `SmartRaycast.rbxm` from the [latest release](https://github.com/Yiannis123Git/SmartRaycast/releases/latest) and drag and drop the file into Roblox Studio.
+
+## Documentation Page
+For more info, refer to the [SmartRaycast documentation page](https://yiannis123git.github.io/SmartRaycast/)
