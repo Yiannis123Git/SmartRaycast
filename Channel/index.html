@@ -552,6 +552,33 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#blockcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Blockcast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spherecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spherecast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shapecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shapecast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#destroy" class="md-nav__link">
     <span class="md-ellipsis">
       Destroy
@@ -678,6 +705,33 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#blockcast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Blockcast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spherecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Spherecast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#shapecast" class="md-nav__link">
+    <span class="md-ellipsis">
+      Shapecast
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#destroy" class="md-nav__link">
     <span class="md-ellipsis">
       Destroy
@@ -760,6 +814,27 @@
 <p class="admonition-title">Info</p>
 <p>This method can be run in parallel.</p>
 </div>
+<h3 id="blockcast">Blockcast</h3>
+<p><em>Channel:Blockcast(BlockOrigin: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/CFrame">CFrame</a></span>, Size: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Vector3">Vector3</a></span>, Direction: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Vector3">Vector3</a></span>, WorldRoot: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a></span>?): <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult">RaycastResult</a></span>?</em> </p>
+<p>Casts a block shape in a given direction at the specified <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> using the Channel's filter.  If no <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> is provided, then <code>Workspace</code> will be used instead. For more info on how Blockcasts work visit <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Blockcast">this page</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This method can be run in parallel.</p>
+</div>
+<h3 id="spherecast">Spherecast</h3>
+<p><em>Channel:Spherecast(Origin: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Vector3">Vector3</a></span>, Radius: <span style="color: teal;">number</span>, Direction: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Vector3">Vector3</a></span>, WorldRoot: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a></span>?): <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult">RaycastResult</a></span>?</em>   </p>
+<p>Casts a spherical shape in a given direction at the specified <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> using the Channel's filter.  If no <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> is provided, then <code>Workspace</code> will be used instead. For more info on how Spherecasts work visit <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Spherecast">this page</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This method can be run in parallel.</p>
+</div>
+<h3 id="shapecast">Shapecast</h3>
+<p><em>Channel:Shapecast(Part: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/classes/BasePart">BasePart</a></span>, Direction: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/Vector3">Vector3</a></span>, WorldRoot: <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a></span>?): <span style="color: teal;"><a href="https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult">RaycastResult</a></span>?</em>  </p>
+<p>Casts the 3D shape in a given direction at the specified <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> using the Channel's filter.  If no <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot">WorldRoot</a> is provided, then <code>Workspace</code> will be used instead. For more info on how Shapecasts work visit <a href="https://devforum.roblox.com/t/introducing-shapecasts/2320655">this page</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This method can be run in parallel.</p>
+</div>
 <h3 id="destroy">Destroy</h3>
 <p><em>Channel:Destroy()</em> </p>
 <p>Destroys a channel by cleaning up references and disconnecting events. After <code>:Destroy</code> is called, the corresponding FilterDescendantsInstances will no longer be actively maintained and the channel should no longer be used.</p>
@@ -779,7 +854,7 @@
 </div>
 <h3 id="forceupdatefilter">ForceUpdateFilter</h3>
 <p><em>Channel:ForceUpdateFilter()</em></p>
-<p>Forcefully updates the Channel's filter instead of waiting for the next module update at the end of a frame.</p>
+<p>Forcefully updates the Channel's filter instead of waiting for the next module update at the "end" of a frame.</p>
 
 
 

@@ -905,7 +905,7 @@
 <a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="p">)</span>
 </code></pre></div>
 <h2 id="modifying-the-channels-filter">Modifying the Channel's filter</h2>
-<p>It should be noted that updates to the channel's filter are not pushed immediately but are applied at the "end" of every frame. If you need the updates to be applied immediately, you can force the filter to update via the [<code>ForceUpdateFilter</code>] channel method.</p>
+<p>It should be noted that updates to the channel's filter are not pushed immediately but are applied at the "end" of every frame. If you need the updates to be applied immediately, you can force the filter to update via the <a href="../Channel/#forceupdatefilter"><code>ForceUpdateFilter</code></a> channel method.</p>
 <h3 id="adding-to-the-channels-filter">Adding to the Channel's filter</h3>
 <p>You can add new tags/instances via the <a href="../Channel/#addtofilter"><code>AddToFilter</code></a> channel method. You can pass instances directly or a string that represents a <a href="https://create.roblox.com/docs/reference/engine/classes/CollectionService">Collection Service</a> tag to add it to the channel's filter. </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">-- Peform changes </span>
@@ -935,7 +935,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Channel</span><span class="p">:</span><span class="n">Destroy</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="casting-a-ray">Casting a ray</h2>
-<p>This works almost identically to the standard <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast">workspace:Raycast</a> API, but with a minor tweak. To cast a ray using the channel's filter, you need to call the [<code>Cast</code>] Channel method. The first two arguments, Origin and Direction, are the same as those in the <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast">Roblox API</a>. The third optional argument specifies the <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot"><code>WorldRoot</code></a> where the ray should be cast. If nil, the <code>workspace</code> will be used.</p>
+<p>This works almost identically to the standard <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast">workspace:Raycast</a> API, but with a minor tweak. To cast a ray using the channel's filter, you need to call the <a href="../Channel/#cast"><code>Cast</code></a> Channel method. The first two arguments, Origin and Direction, are the same as those in the <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast">Roblox API</a>. The third optional argument specifies the <a href="https://create.roblox.com/docs/reference/engine/classes/WorldRoot"><code>WorldRoot</code></a> where the ray should be cast. If nil, the <code>workspace</code> will be used. Shape casting, Sphere casting, and Block casting are supported, with each having their cast method and corresponding arguments. For more information, refer to the <a href="../Channel/#methods">Channel API</a>.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>This method can be run in parallel.</p>
@@ -943,7 +943,7 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kd">local</span> <span class="n">RaycastResult</span> <span class="o">=</span> <span class="n">Channel</span><span class="p">:</span><span class="n">Cast</span><span class="p">(</span><span class="n">Origin</span><span class="p">,</span><span class="n">Direction</span><span class="p">,</span><span class="n">game</span><span class="p">.</span><span class="n">Workspace</span><span class="p">)</span> <span class="c1">-- the third arg is optional</span>
 </code></pre></div>
 <h2 id="accessing-channels">Accessing channels</h2>
-<p>You can access a channel by getting it through the <code>:GetChannelObject</code> module function.</p>
+<p>You can access a channel by getting it through the <a href="../SmartRaycast/#getchannel"><code>:GetChannel</code></a> module function.</p>
 <div class="admonition info">
 <p class="admonition-title">Info</p>
 <p>This functionality can be limited when using <a href="https://create.roblox.com/docs/reference/engine/classes/Actor">actors</a></p>
