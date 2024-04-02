@@ -21,9 +21,38 @@ RaycastParams tied to the Channel. All properties of the RaycastParams can be ch
 ----
 
 ### Cast
+  
 _Channel:Cast(Origin: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, Direction: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, WorldRoot: <span style="color: teal;">[WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot)</span>?): <span style="color: teal;">[RaycastResult](https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult)</span>?_
   
 Casts a ray with the given origin and direction at the specified [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) using the Channel's filter. If no [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) is provided, then `Workspace` will be used instead.
+
+!!! Info
+    This method can be run in parallel.
+
+### Blockcast
+  
+_Channel:Blockcast(BlockOrigin: <span style="color: teal;">[CFrame](https://create.roblox.com/docs/reference/engine/datatypes/CFrame)</span>, Size: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, Direction: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, WorldRoot: <span style="color: teal;">[WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot)</span>?): <span style="color: teal;">[RaycastResult](https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult)</span>?_ 
+
+Casts a block shape in a given direction at the specified [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) using the Channel's filter.  If no [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) is provided, then `Workspace` will be used instead. For more info on how Blockcasts work visit [this page](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Blockcast)
+
+
+!!! Info
+    This method can be run in parallel.
+
+### Spherecast   
+  
+_Channel:Spherecast(Origin: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, Radius: <span style="color: teal;">number</span>, Direction: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, WorldRoot: <span style="color: teal;">[WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot)</span>?): <span style="color: teal;">[RaycastResult](https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult)</span>?_   
+  
+Casts a spherical shape in a given direction at the specified [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) using the Channel's filter.  If no [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) is provided, then `Workspace` will be used instead. For more info on how Spherecasts work visit [this page](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Spherecast)
+
+!!! Info
+    This method can be run in parallel.
+
+### Shapecast
+  
+_Channel:Shapecast(Part: <span style="color: teal;">[BasePart](https://create.roblox.com/docs/reference/engine/classes/BasePart)</span>, Direction: <span style="color: teal;">[Vector3](https://create.roblox.com/docs/reference/engine/datatypes/Vector3)</span>, WorldRoot: <span style="color: teal;">[WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot)</span>?): <span style="color: teal;">[RaycastResult](https://create.roblox.com/docs/reference/engine/datatypes/RaycastResult)</span>?_  
+  
+Casts the 3D shape in a given direction at the specified [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) using the Channel's filter.  If no [WorldRoot](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) is provided, then `Workspace` will be used instead. For more info on how Shapecasts work visit [this page](https://devforum.roblox.com/t/introducing-shapecasts/2320655)
 
 !!! Info
     This method can be run in parallel.
@@ -57,5 +86,5 @@ Removes an Instance or [collection service](https://create.roblox.com/docs/refer
 
 _Channel:ForceUpdateFilter()_
 
-Forcefully updates the Channel's filter instead of waiting for the next module update at the end of a frame.
+Forcefully updates the Channel's filter instead of waiting for the next module update at the "end" of a frame.
 

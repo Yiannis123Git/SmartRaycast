@@ -122,12 +122,9 @@ function Channel.new(
 	-- Connect FDI update event
 	-- This updates our base filter and resets the "cache" caused by our raycast operations
 
-	self._Janitor:Add(
-		RunService.Heartbeat:Connect(function()
-			RaycastParams.FilterDescendantsInstances = self._BaseArray
-		end),
-		"Disconnect"
-	)
+	RunService:BindToRenderStep("SmartRaycast: " .. Name, 0, function()
+		RaycastParams.FilterDescendantsInstances = self._BaseArray
+	end)
 
 	-- Update FDI on channel creation
 
@@ -167,6 +164,7 @@ end
 function Channel.Destroy(self: Channel)
 	coroutine.close(self._GCCoroutine)
 	self._Janitor:Destroy()
+	RunService:UnbindFromRenderStep("SmartRaycast: " .. self._Name)
 	Channels[self._Name] = nil
 end
 
@@ -262,13 +260,45 @@ function Channel.ForceUpdateFilter(self: Channel)
 end
 
 function Channel.Cast(self: Channel, Origin: Vector3, Direction: Vector3, WorldRoot: WorldRoot?): RaycastResult?
+	return self:_RaycastOperation("Raycast", WorldRoot, Origin, Direction)
+end
+
+function Channel.Blockcast(
+	self: Channel,
+	BlockOrigin: CFrame,
+	Size: Vector3,
+	Direction: Vector3,
+	WorldRoot: WorldRoot?
+): RaycastResult?
+	return self:_RaycastOperation("Blockcast", WorldRoot, BlockOrigin, Size, Direction)
+end
+
+function Channel.Spherecast(
+	self: Channel,
+	Origin: Vector3,
+	Radius: number,
+	Direction: Vector3,
+	WorldRoot: WorldRoot?
+): RaycastResult?
+	return self:_RaycastOperation("Spherecast", WorldRoot, Origin, Radius, Direction)
+end
+
+function Channel.Shapecast(self: Channel, Part: BasePart, Direction: Vector3, WorldRoot: WorldRoot): RaycastResult?
+	return self:_RaycastOperation("Shapecast", WorldRoot, Part, Direction)
+end
+
+function Channel._RaycastOperation(self: Channel, CastToBeUsed: string, WorldRoot: WorldRoot?, ...)
 	WorldRoot = WorldRoot or Workspace
 
-	local RaycastParams = self.RaycastParams
-	local ExcludeCast = RaycastParams.FilterType == Enum.RaycastFilterType.Exclude
+	local RayParams = self.RaycastParams
+	local ExcludeCast = RayParams.FilterType == Enum.RaycastFilterType.Exclude
+	local CastRay = (WorldRoot :: WorldRoot)[CastToBeUsed] -- Don't think this will causes any issues
+
+	local Args = { ... }
+	Args[#Args + 1] = RayParams
 
 	if self._CanBeAdded == nil or ExcludeCast == false then
-		return (WorldRoot :: WorldRoot):Raycast(Origin, Direction, RaycastParams)
+		return CastRay(WorldRoot, table.unpack(Args))
 	end
 
 	local CanBeAdded = self._CanBeAdded
@@ -276,7 +306,7 @@ function Channel.Cast(self: Channel, Origin: Vector3, Direction: Vector3, WorldR
 	local Result
 
 	repeat
-		RaycastResult = (WorldRoot :: WorldRoot):Raycast(Origin, Direction, RaycastParams)
+		RaycastResult = CastRay(WorldRoot, table.unpack(Args))
 
 		if RaycastResult then
 			Result = CanBeAdded(RaycastResult.Instance)
@@ -284,11 +314,11 @@ function Channel.Cast(self: Channel, Origin: Vector3, Direction: Vector3, WorldR
 			if Result ~= true then
 				break
 			else
-				RaycastParams:AddToFilter(RaycastResult.Instance) -- Add to "cache"
+				RayParams:AddToFilter(RaycastResult.Instance) -- Add to "cache"
 			end
 		end
 
-	until RaycastResult == nil
+	until RaycastResult :: RaycastResult? == nil
 
 	return RaycastResult
 end

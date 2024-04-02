@@ -61,7 +61,7 @@ local OurNewlyCreatedChannel = SmartRaycastModule.CreateChannel(
 
 ```
 ## Modifying the Channel's filter
-It should be noted that updates to the channel's filter are not pushed immediately but are applied at the "end" of every frame. If you need the updates to be applied immediately, you can force the filter to update via the [`ForceUpdateFilter`] channel method.
+It should be noted that updates to the channel's filter are not pushed immediately but are applied at the "end" of every frame. If you need the updates to be applied immediately, you can force the filter to update via the [`ForceUpdateFilter`](Channel.md#forceupdatefilter) channel method.
 
 ### Adding to the Channel's filter
 
@@ -106,7 +106,7 @@ Channel:Destroy()
 
 ## Casting a ray
 
-This works almost identically to the standard [workspace:Raycast](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast) API, but with a minor tweak. To cast a ray using the channel's filter, you need to call the [`Cast`] Channel method. The first two arguments, Origin and Direction, are the same as those in the [Roblox API](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast). The third optional argument specifies the [`WorldRoot`](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) where the ray should be cast. If nil, the `workspace` will be used.
+This works almost identically to the standard [workspace:Raycast](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast) API, but with a minor tweak. To cast a ray using the channel's filter, you need to call the [`Cast`](Channel.md#cast) Channel method. The first two arguments, Origin and Direction, are the same as those in the [Roblox API](https://create.roblox.com/docs/reference/engine/classes/WorldRoot#Raycast). The third optional argument specifies the [`WorldRoot`](https://create.roblox.com/docs/reference/engine/classes/WorldRoot) where the ray should be cast. If nil, the `workspace` will be used. Shape casting, Sphere casting, and Block casting are supported, with each having their cast method and corresponding arguments. For more information, refer to the [Channel API](Channel.md#methods).
 
 !!! Info
     This method can be run in parallel.
@@ -117,7 +117,7 @@ local RaycastResult = Channel:Cast(Origin,Direction,game.Workspace) -- the third
 
 ## Accessing channels
 
-You can access a channel by getting it through the `:GetChannelObject` module function.
+You can access a channel by getting it through the [`:GetChannel`](SmartRaycast.md#getchannel) module function.
 
 !!! Info
     This functionality can be limited when using [actors](https://create.roblox.com/docs/reference/engine/classes/Actor)
