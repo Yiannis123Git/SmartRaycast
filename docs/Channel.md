@@ -67,7 +67,7 @@ Destroys a channel by cleaning up references and disconnecting events. After `:D
 
 _Channel:AddToFilter(ToAdd: <span style="color: teal;">[Instance](https://create.roblox.com/docs/reference/engine/datatypes/Instance)</span> | <span style="color: teal;">string</span> )_
   
-Adds an instance or [collection service](https://create.roblox.com/docs/reference/engine/classes/CollectionService) tag to the FilterDescendantsInstances.
+Adds an instance or [collection service](https://create.roblox.com/docs/reference/engine/classes/CollectionService) tag to the FilterDescendantsInstances. This method protects you from adding duplicate entries.
 
 !!! Info
     This method can be run in parallel when adding instances.
@@ -77,7 +77,7 @@ Adds an instance or [collection service](https://create.roblox.com/docs/referenc
 
 _Channel:RemoveFromFilter(ToRemove: <span style="color: teal;">[Instance](https://create.roblox.com/docs/reference/engine/datatypes/Instance)</span> | <span style="color: teal;">string</span> )_
   
-Removes an Instance or [collection service](https://create.roblox.com/docs/reference/engine/classes/CollectionService) tag from the FilterDescendantsInstances.
+Removes an Instance or [collection service](https://create.roblox.com/docs/reference/engine/classes/CollectionService) tag from the FilterDescendantsInstances. This method will not error if you try to remove a tag/instance that does not exist.
 
 !!! Info
     This method can be run in parallel when removing instances.
