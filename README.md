@@ -6,6 +6,7 @@ What does it do?
 - Centralizes Raycast Parameters: All parameters are derived from the same module.
 - Helps you avoid writing redundant boilerplate or duplicate code.
 - Handles all of the work for you through a simple API.
+- Allows you to filter a large number of objects in complicated environments.
 
 ## Installation 
 
