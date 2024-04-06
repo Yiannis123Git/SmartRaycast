@@ -1,11 +1,12 @@
 [package]
 name = "yiannis123git/smartraycast"
 description = "Raycast Management Module for Efficient Raycasting"
-version = "2.1.0"
+version = "2.1.1"
 license = "MIT"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
+exclude = ["Client","SmartRaycastTesting.rbxl"]
 
 [dependencies]
 Janitor = "howmanysmall/janitor@^1.15.7"

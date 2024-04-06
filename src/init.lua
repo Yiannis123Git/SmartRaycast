@@ -63,7 +63,7 @@ function Channel.new(
 	CollisionGroup: string?,
 	RespectCanCollide: boolean?,
 	BruteForceAllSlow: boolean?
-)
+): Channel
 	local self = setmetatable({} :: ChannelProperties, Channel)
 
 	-- Sanity check
